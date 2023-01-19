@@ -636,7 +636,7 @@ ReportDefinitions:
                     (SUM(CASE WHEN taxheadcode LIKE 'PT_DECIMAL_CEILING_CREDIT' THEN adjustedamount ELSE 0 END)
                     + SUM(CASE WHEN taxheadcode LIKE 'PT_DECIMAL_CEILING_DEBIT' THEN adjustedamount ELSE 0 END))  as adjusment
                   FROM egcl_receiptdetails_v1
-                  WHERE tenantid != 'br.testing'
+                  WHERE tenantid != 'bh.testing'
                   GROUP BY receiptheader
       )
       SELECT 
@@ -664,7 +664,7 @@ ReportDefinitions:
       JOIN receipt_breakup ON rh.id = receipt_breakup.receiptheader
       JOIN eg_pt_propertydetail_v2 pt_detail ON CONCAT(pt_detail.property, ':', pt_detail.assessmentnumber) = rh.consumercode
       JOIN eg_pt_address_v2 pt_addr ON pt_detail.property = pt_addr.property
-      WHERE rh.tenantid != 'br.testing' and rh.status = 'Cancelled'
+      WHERE rh.tenantid != 'bh.testing' and rh.status = 'Cancelled'
   orderby: ORDER BY rh.receiptdate DESC
 
 - reportName: StateWidePtCollection
@@ -754,7 +754,7 @@ ReportDefinitions:
       LEFT OUTER JOIN egcl_instrumentheader_v1 AS ih ON ri.instrumentheader = ih.id and ih.instrumentstatus   != 'CANCELLED' 
       where rh.status != 'Cancelled'
       ) AS tbl_amounts ON CONCAT(pd.property, ':', pd.assessmentnumber) = tbl_amounts.consumercode 
-      WHERE tenantid LIKE CONCAT(SPLIT_PART($tenantid, '.', 1), '%') and tenantid != 'br.testing'
+      WHERE tenantid LIKE CONCAT(SPLIT_PART($tenantid, '.', 1), '%') and tenantid != 'bh.testing'
   groupby: GROUP BY tenantid
   orderby: ORDER BY tenantid, totalamountpaid DESC NULLS LAST
 

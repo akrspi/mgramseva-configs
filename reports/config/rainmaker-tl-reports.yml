@@ -287,7 +287,7 @@ ReportDefinitions:
     INNER JOIN egcl_instrumentheader_v1 as ih ON ih.id = ri.instrumentheader
     LEFT OUTER JOIN (SELECT tradelicensedetailid,array_to_string(array_agg(message.message),',') AS acc FROM eg_tl_accessory 
     LEFT OUTER JOIN message ON split_part(message.code,'_',2) = accessorycategory AND message.locale = 'en_IN' GROUP BY 1 ) tlacc ON tlacc.tradelicensedetailid = tld.id 
-    WHERE tl.tenantId != 'br.testing'
+    WHERE tl.tenantId != 'bh.testing'
 
 - reportName: TradeLicenseCancelledRegistryReport
   summary: TL Cancelled Receipt Register Report
@@ -479,7 +479,7 @@ ReportDefinitions:
       from egcl_receiptheader_v1 as rh
     inner join egcl_receiptinstrument_v1 as ri on ri.receiptheader = rh.id
     inner join egcl_instrumentheader_v1 as ih on ih.id = ri.instrumentheader
-    where rh.businessdetails = 'TL' and rh.status !='Cancelled' and rh.tenantid !='br.testing'
+    where rh.businessdetails = 'TL' and rh.status !='Cancelled' and rh.tenantid !='bh.testing'
     AND rh.tenantId LIKE $tenantid
   groupby: GROUP BY rh.tenantId
 
@@ -489,7 +489,7 @@ ReportDefinitions:
   moduleName: rainmaker-tl
   externalService:
   - entity: $.messages[*]
-    apiURL: http://egov-localization:8080/localization/messages/v1/_search?locale=en_IN&tenantId=br&module=rainmaker-tl
+    apiURL: http://egov-localization:8080/localization/messages/v1/_search?locale=en_IN&tenantId=bh&module=rainmaker-tl
     keyOrder: code,message
     tableName: tbl_localization
   sourceColumns:
@@ -583,7 +583,7 @@ ReportDefinitions:
         SUM(CASE status when 'APPLIED' then 1 else 0 end) as applied,
         SUM(CASE status when 'CANCELLED' then 1 else 0 end) as cancelled
       FROM eg_tl_tradelicense as tl
-      WHERE tl.tenantid != 'br.testing'
+      WHERE tl.tenantid != 'bh.testing'
   groupby: GROUP BY tenantid
   orderby: ORDER BY tenantid
 
@@ -691,7 +691,7 @@ ReportDefinitions:
       from egcl_receiptheader_v1 as rh
     inner join egcl_receiptinstrument_v1 as ri on ri.receiptheader = rh.id
     inner join egcl_instrumentheader_v1 as ih on ih.id = ri.instrumentheader
-    where rh.businessdetails = 'TL' and rh.status !='Cancelled' and rh.tenantid !='br.testing'
+    where rh.businessdetails = 'TL' and rh.status !='Cancelled' and rh.tenantid !='bh.testing'
   groupby: GROUP BY rh.tenantId
   orderby: ORDER BY rh.tenantId asc
 
